@@ -1,56 +1,32 @@
 <template>
   <!-- 视频内容网格 -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-    <div
-      v-for="video in videos"
-      :key="video.id"
-      class="group relative card overflow-hidden card-hover"
-    >
+    <div v-for="video in videos" :key="video.id" class="group relative card overflow-hidden card-hover">
       <!-- 封面图片 -->
       <div class="relative overflow-hidden cursor-pointer">
-        <img
-          :src="video.cover"
-          referrerpolicy="no-referrer"
-          class="h-36 md:h-40 image image-hover"
-          :alt="video.title"
-        />
+        <img :src="video.cover" referrerpolicy="no-referrer" class="h-36 md:h-40 image image-hover" :key="Date.now()"
+          :alt="video.title" />
         <!-- 渐变遮罩 -->
         <div class="image-mask"></div>
 
         <!-- 删除按钮 -->
-        <button
-          v-if="isLogin"
-          @click.stop="delVideoConfirm(video)"
+        <button v-if="isLogin" @click.stop="delVideoConfirm(video)"
           class="absolute z-20 top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-destructive/90 text-destructive-foreground opacity-0 group-hover:opacity-100 hover:bg-destructive hover:scale-110 transition-all duration-200 shadow-lg backdrop-blur-sm"
-          title="删除视频"
-          aria-label="删除视频"
-        >
+          title="删除视频" aria-label="删除视频">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-            ></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
           </svg>
         </button>
 
         <!-- 播放图标覆层 -->
-        <div
-          @click="openVideo(video)"
-          class="absolute z-10 inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        >
+        <div @click="openVideo(video)"
+          class="absolute z-10 inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div
-            class="w-16 h-16 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center shadow-xl transform group-hover:scale-110 transition-transform duration-300"
-          >
-            <svg
-              class="w-8 h-8 text-primary-foreground ml-1"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
+            class="w-16 h-16 rounded-full bg-primary/90 backdrop-blur-sm flex items-center justify-center shadow-xl transform group-hover:scale-110 transition-transform duration-300">
+            <svg class="w-8 h-8 text-primary-foreground ml-1" fill="currentColor" viewBox="0 0 20 20">
               <path
-                d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"
-              ></path>
+                d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z">
+              </path>
             </svg>
           </div>
         </div>
@@ -60,35 +36,19 @@
       <div class="p-4 space-y-2">
         <!-- 标题 -->
         <h3
-          class="font-bold text-lg text-foreground line-clamp-1 group-hover:text-primary transition-colors duration-200"
-        >
-          <a
-            :href="video.url"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="hover:underline"
-            @click.stop
-          >
+          class="font-bold text-lg text-foreground line-clamp-1 group-hover:text-primary transition-colors duration-200">
+          <a :href="video.url" target="_blank" rel="noopener noreferrer" class="hover:underline" @click.stop>
             {{ video.title }}
           </a>
         </h3>
 
         <!-- 作者和日期 -->
         <div class="flex items-center justify-between text-sm cursor-pointer">
-          <div
-            v-if="showAuthor"
-            @click="router.push({ name: 'author', params: { authorId: video.author?.id } })"
-            class="flex items-center space-x-2 flex-1 min-w-0"
-          >
-            <div
-              class="w-7 h-7 rounded-full bg-gradient-to-br from-primary/20 to-chart-2/20 p-0.5 flex-shrink-0"
-            >
-              <img
-                referrerpolicy="no-referrer"
-                :src="video.author?.avatar"
-                :alt="video.author?.name"
-                class="w-full h-full rounded-full object-cover"
-              />
+          <div v-if="showAuthor" @click="router.push({ name: 'author', params: { authorId: video.author?.id } })"
+            class="flex items-center space-x-2 flex-1 min-w-0">
+            <div class="w-7 h-7 rounded-full bg-gradient-to-br from-primary/20 to-chart-2/20 p-0.5 flex-shrink-0">
+              <img referrerpolicy="no-referrer" :src="video.author?.avatar" :alt="video.author?.name" :key="Date.now()"
+                class="w-full h-full rounded-full object-cover" />
             </div>
             <span class="text-muted-foreground truncate font-medium">{{ video.author?.name }}</span>
           </div>
@@ -99,47 +59,35 @@
 
         <!-- 主要标签 -->
         <div class="flex flex-wrap gap-2">
-          <span
-            v-if="video.isOriginal()"
-            class="inline-flex items-center px-2.5 py-1 bg-primary/10 text-primary text-xs rounded-md font-medium border border-primary/20"
-          >
+          <span v-if="video.isOriginal()"
+            class="inline-flex items-center px-2.5 py-1 bg-primary/10 text-primary text-xs rounded-md font-medium border border-primary/20">
             <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
               <path
-                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-              ></path>
+                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+              </path>
             </svg>
             原创
           </span>
-          <span
-            v-if="video.isCompleted()"
-            class="inline-flex items-center px-2.5 py-1 bg-chart-2/10 text-chart-2 text-xs rounded-md font-medium border border-chart-2/20"
-          >
+          <span v-if="video.isCompleted()"
+            class="inline-flex items-center px-2.5 py-1 bg-chart-2/10 text-chart-2 text-xs rounded-md font-medium border border-chart-2/20">
             <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                fill-rule="evenodd"
+              <path fill-rule="evenodd"
                 d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                clip-rule="evenodd"
-              ></path>
+                clip-rule="evenodd"></path>
             </svg>
             完结
           </span>
 
-          <span
-            v-if="video.background()"
-            class="inline-flex items-center px-2.5 py-1 bg-accent/60 text-accent-foreground text-xs rounded-md font-medium"
-          >
+          <span v-if="video.background()"
+            class="inline-flex items-center px-2.5 py-1 bg-accent/60 text-accent-foreground text-xs rounded-md font-medium">
             {{ video.background()?.icon }} {{ video.background()?.name }}
           </span>
-          <span
-            v-if="video.hasSystem() && tagCount(video) < 3"
-            class="inline-flex items-center px-2.5 py-1 bg-chart-3/10 text-chart-3 text-xs rounded-md font-medium border border-chart-3/20"
-          >
+          <span v-if="video.hasSystem() && tagCount(video) < 3"
+            class="inline-flex items-center px-2.5 py-1 bg-chart-3/10 text-chart-3 text-xs rounded-md font-medium border border-chart-3/20">
             <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                fill-rule="evenodd"
+              <path fill-rule="evenodd"
                 d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
-                clip-rule="evenodd"
-              ></path>
+                clip-rule="evenodd"></path>
             </svg>
             系统
           </span>
@@ -147,18 +95,13 @@
 
         <!-- 风格标签 -->
         <div v-if="video.style().length > 0" class="flex flex-wrap gap-1.5">
-          <span
-            @click="router.push({ name: 'tag', params: { tagId: s.id } })"
-            v-for="s in video.style().slice(0, 3)"
+          <span @click="router.push({ name: 'tag', params: { tagId: s.id } })" v-for="s in video.style().slice(0, 3)"
             :key="s.id"
-            class="cursor-pointer px-2 py-0.5 bg-muted/40 text-muted-foreground text-xs rounded border border-border/50"
-          >
+            class="cursor-pointer px-2 py-0.5 bg-muted/40 text-muted-foreground text-xs rounded border border-border/50">
             {{ s.icon }} {{ s.name }}
           </span>
-          <span
-            v-if="video.style.length > 3"
-            class="px-2 py-0.5 bg-muted/40 text-muted-foreground text-xs rounded border border-border/50"
-          >
+          <span v-if="video.style.length > 3"
+            class="px-2 py-0.5 bg-muted/40 text-muted-foreground text-xs rounded border border-border/50">
             +{{ video.style().length - 3 }}
           </span>
         </div>
@@ -167,63 +110,31 @@
   </div>
 
   <!-- 视频详情模态框 -->
-  <Transition
-    enter-active-class="transition-all duration-300 ease-out"
-    enter-from-class="opacity-0 scale-95"
-    enter-to-class="opacity-100 scale-100"
-    leave-active-class="transition-all duration-200 ease-in"
-    leave-from-class="opacity-100 scale-100"
-    leave-to-class="opacity-0 scale-95"
-  >
-    <div
-      v-if="selectedVideo && showVideoModal"
-      class="fixed inset-0 z-50 flex items-center justify-center p-4"
-      @click="closeVideoModal"
-    >
+  <Transition enter-active-class="transition-all duration-300 ease-out" enter-from-class="opacity-0 scale-95"
+    enter-to-class="opacity-100 scale-100" leave-active-class="transition-all duration-200 ease-in"
+    leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95">
+    <div v-if="selectedVideo && showVideoModal" class="fixed inset-0 z-50 flex items-center justify-center p-4"
+      @click="closeVideoModal">
       <div class="fixed inset-0 bg-background/80 backdrop-blur-sm"></div>
       <div
         class="relative bg-card border border-border rounded-3xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto"
-        @click.stop
-      >
+        @click.stop>
         <!-- 关闭按钮 -->
-        <button
-          @click="closeVideoModal"
-          class="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-muted/80 hover:bg-muted text-muted-foreground hover:text-foreground transition-all duration-200"
-        >
+        <button @click="closeVideoModal"
+          class="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-muted/80 hover:bg-muted text-muted-foreground hover:text-foreground transition-all duration-200">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-            ></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
           </svg>
         </button>
         <!-- 编辑按钮 -->
-        <button
-          v-if="isLogin"
-          @click="goToEdit"
+        <button v-if="isLogin" @click="goToEdit"
           class="absolute top-20 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-muted/80 hover:bg-muted text-muted-foreground hover:text-foreground transition-all duration-200"
-          aria-label="编辑视频"
-        >
-          <svg
-            class="size-4"
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-          >
-            <g
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-            >
+          aria-label="编辑视频">
+          <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
               <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
               <path
-                d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"
-              />
+                d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z" />
             </g>
           </svg>
         </button>
@@ -233,18 +144,11 @@
           <h3 class="text-lg font-bold text-foreground pr-12">{{ selectedVideo.title }}</h3>
 
           <!-- 作者信息 -->
-          <div
-            v-if="showAuthor"
-            class="flex cursor-pointer items-center space-x-3 p-4 bg-muted/20 rounded-xl"
-            @click="goToAuthor(selectedVideo.author?.id)"
-          >
+          <div v-if="showAuthor" class="flex cursor-pointer items-center space-x-3 p-4 bg-muted/20 rounded-xl"
+            @click="goToAuthor(selectedVideo.author?.id)">
             <div class="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-chart-2/20 p-1">
-              <img
-                :src="selectedVideo.author?.avatar"
-                :alt="selectedVideo.author?.name"
-                referrerpolicy="no-referrer"
-                class="w-full h-full rounded-full object-cover"
-              />
+              <img :src="selectedVideo.author?.avatar" :alt="selectedVideo.author?.name" referrerpolicy="no-referrer"
+                :key="Date.now()" class="w-full h-full rounded-full object-cover" />
             </div>
             <div>
               <div class="text-foreground font-semibold">{{ selectedVideo.author?.name }}</div>
@@ -253,17 +157,12 @@
           </div>
 
           <!-- 推荐理由 -->
-          <div
-            v-if="selectedVideo.description"
-            class="p-4 bg-primary/5 border border-primary/10 rounded-xl"
-          >
+          <div v-if="selectedVideo.description" class="p-4 bg-primary/5 border border-primary/10 rounded-xl">
             <h4 class="font-semibold text-foreground mb-2 flex items-center">
               <svg class="w-5 h-5 text-primary mr-2" fill="currentColor" viewBox="0 0 20 20">
-                <path
-                  fill-rule="evenodd"
+                <path fill-rule="evenodd"
                   d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                  clip-rule="evenodd"
-                ></path>
+                  clip-rule="evenodd"></path>
               </svg>
               推荐理由
             </h4>
@@ -274,67 +173,50 @@
           <div class="space-y-3">
             <h4 class="font-semibold text-foreground flex items-center">
               <svg class="w-5 h-5 text-chart-2 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                <path
-                  fill-rule="evenodd"
+                <path fill-rule="evenodd"
                   d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z"
-                  clip-rule="evenodd"
-                ></path>
+                  clip-rule="evenodd"></path>
               </svg>
               标签详情
             </h4>
             <div class="flex flex-wrap gap-2">
-              <span
-                v-if="selectedVideo.isOriginal()"
-                class="inline-flex items-center px-3 py-2 bg-primary/10 text-primary rounded-lg font-medium border border-primary/20"
-              >
+              <span v-if="selectedVideo.isOriginal()"
+                class="inline-flex items-center px-3 py-2 bg-primary/10 text-primary rounded-lg font-medium border border-primary/20">
                 <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
                   <path
-                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                  ></path>
+                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                  </path>
                 </svg>
                 原创作品
               </span>
-              <span
-                v-if="selectedVideo.isCompleted()"
-                class="inline-flex items-center px-3 py-2 bg-chart-2/10 text-chart-2 rounded-lg font-medium border border-chart-2/20"
-              >
+              <span v-if="selectedVideo.isCompleted()"
+                class="inline-flex items-center px-3 py-2 bg-chart-2/10 text-chart-2 rounded-lg font-medium border border-chart-2/20">
                 <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fill-rule="evenodd"
+                  <path fill-rule="evenodd"
                     d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  ></path>
+                    clip-rule="evenodd"></path>
                 </svg>
                 已完结
               </span>
 
-              <span
-                v-if="selectedVideo.hasSystem()"
-                class="inline-flex items-center px-3 py-2 bg-chart-3/10 text-chart-3 rounded-lg font-medium border border-chart-3/20"
-              >
+              <span v-if="selectedVideo.hasSystem()"
+                class="inline-flex items-center px-3 py-2 bg-chart-3/10 text-chart-3 rounded-lg font-medium border border-chart-3/20">
                 <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path
-                    fill-rule="evenodd"
+                  <path fill-rule="evenodd"
                     d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
-                    clip-rule="evenodd"
-                  ></path>
+                    clip-rule="evenodd"></path>
                 </svg>
                 系统外挂
               </span>
 
-              <span
-                v-if="selectedVideo.background()"
-                class="inline-flex items-center px-3 py-2 bg-accent/60 text-accent-foreground rounded-lg font-medium"
-              >
+              <span v-if="selectedVideo.background()"
+                class="inline-flex items-center px-3 py-2 bg-accent/60 text-accent-foreground rounded-lg font-medium">
                 {{ selectedVideo.background()?.icon }}
                 {{ selectedVideo.background()?.name }}
               </span>
-              <span
-                v-for="s in selectedVideo.style()"
-                @click="router.push({ name: 'tag', params: { tagId: s.id } })"
+              <span v-for="s in selectedVideo.style()" @click="router.push({ name: 'tag', params: { tagId: s.id } })"
                 :key="s.id"
-                class="inline-flex items-center px-3 py-2 bg-muted/60 text-muted-foreground rounded-lg font-medium border border-border"
-              >
+                class="inline-flex items-center px-3 py-2 bg-muted/60 text-muted-foreground rounded-lg font-medium border border-border">
                 {{ s.icon }} {{ s.name }}
               </span>
             </div>
@@ -342,27 +224,19 @@
 
           <!-- 操作按钮 -->
           <div class="flex items-center space-x-4 pt-4">
-            <a
-              :href="selectedVideo.url"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="flex-1 px-6 py-3 bg-gradient-to-r from-primary to-chart-2 text-primary-foreground rounded-xl hover:shadow-lg transition-all duration-200 font-semibold text-center flex items-center justify-center space-x-2"
-            >
+            <a :href="selectedVideo.url" target="_blank" rel="noopener noreferrer"
+              class="flex-1 px-6 py-3 bg-gradient-to-r from-primary to-chart-2 text-primary-foreground rounded-xl hover:shadow-lg transition-all duration-200 font-semibold text-center flex items-center justify-center space-x-2">
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
-                <path
-                  fill-rule="evenodd"
+                <path fill-rule="evenodd"
                   d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-                  clip-rule="evenodd"
-                ></path>
+                  clip-rule="evenodd"></path>
               </svg>
               <span>立即观看</span>
             </a>
 
-            <button
-              @click="closeVideoModal"
-              class="px-6 py-3 bg-muted/40 hover:bg-muted/60 text-muted-foreground hover:text-foreground rounded-xl transition-all duration-200 font-medium"
-            >
+            <button @click="closeVideoModal"
+              class="px-6 py-3 bg-muted/40 hover:bg-muted/60 text-muted-foreground hover:text-foreground rounded-xl transition-all duration-200 font-medium">
               关闭
             </button>
           </div>
@@ -372,40 +246,19 @@
   </Transition>
 
   <!-- 删除确认模态框 -->
-  <Transition
-    enter-active-class="transition-all duration-300 ease-out"
-    enter-from-class="opacity-0 scale-95"
-    enter-to-class="opacity-100 scale-100"
-    leave-active-class="transition-all duration-200 ease-in"
-    leave-from-class="opacity-100 scale-100"
-    leave-to-class="opacity-0 scale-95"
-  >
-    <div
-      v-if="showDeleteModal"
-      class="fixed inset-0 z-50 flex items-center justify-center p-4"
-      @click="closeDeleteModal"
-    >
+  <Transition enter-active-class="transition-all duration-300 ease-out" enter-from-class="opacity-0 scale-95"
+    enter-to-class="opacity-100 scale-100" leave-active-class="transition-all duration-200 ease-in"
+    leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95">
+    <div v-if="showDeleteModal" class="fixed inset-0 z-50 flex items-center justify-center p-4"
+      @click="closeDeleteModal">
       <div class="fixed inset-0 bg-background/80 backdrop-blur-sm"></div>
-      <div
-        class="relative bg-card border border-border rounded-2xl shadow-2xl p-6 w-full max-w-md"
-        @click.stop
-      >
+      <div class="relative bg-card border border-border rounded-2xl shadow-2xl p-6 w-full max-w-md" @click.stop>
         <div class="text-center mb-6">
-          <div
-            class="w-16 h-16 mx-auto mb-4 rounded-full bg-destructive/10 flex items-center justify-center"
-          >
-            <svg
-              class="w-8 h-8 text-destructive"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-1.964-1.333-2.732 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-              ></path>
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-destructive/10 flex items-center justify-center">
+            <svg class="w-8 h-8 text-destructive" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-1.964-1.333-2.732 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+              </path>
             </svg>
           </div>
           <h3 class="text-xl font-bold text-foreground mb-2">确认删除视频</h3>
@@ -413,16 +266,12 @@
         </div>
 
         <div class="flex space-x-3">
-          <button
-            @click="closeDeleteModal"
-            class="flex-1 px-4 py-2 border border-border text-foreground rounded-lg hover:bg-accent transition-colors duration-200"
-          >
+          <button @click="closeDeleteModal"
+            class="flex-1 px-4 py-2 border border-border text-foreground rounded-lg hover:bg-accent transition-colors duration-200">
             取消
           </button>
-          <button
-            @click="delVideo"
-            class="flex-1 px-4 py-2 bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 transition-colors duration-200"
-          >
+          <button @click="delVideo"
+            class="flex-1 px-4 py-2 bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 transition-colors duration-200">
             确认删除
           </button>
         </div>
@@ -474,7 +323,7 @@ const tagCount = (video: Video) => {
 const goToEdit = () => {
   closeVideoModal()
   router.push({ name: 'videos-update', params: { id: selectedVideo.value?.id } })
-  location.reload()
+
 }
 
 const openVideo = (video: Video) => {
