@@ -1,6 +1,6 @@
 services:
   shadiao:
-    image: ghcr.io/yozya-official/shadiao:latest
+    image: ghcr.io/yueli-official/shadiao:latest
     container_name: shadiao
     platform: linux/amd64
     ports:
